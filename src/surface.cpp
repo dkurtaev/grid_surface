@@ -29,15 +29,22 @@ Surface::~Surface() {
 
 void Surface::Draw() {
   glColor3ub(0, 127, 127);
-  for (int i = 0; i < n_nodes_by_y; ++i) {
-    for (int j = 0; j < n_nodes_by_x; ++j) {
-      float x = min_x + j * step_by_x;
-      float y = min_y + i * step_by_y;
+  glBegin(GL_TRIANGLES);
+  for (int i = 1; i < n_nodes_by_y; ++i) {
+    for (int j = 1; j < n_nodes_by_x; ++j) {
+      float right = min_x + j * step_by_x;
+      float top = min_y + i * step_by_y;
+      glVertex3f(right, top, heights[i * n_nodes_by_x + j]);
+      glVertex3f(right - step_by_x, top, heights[i * n_nodes_by_x + j - 1]);
+      glVertex3f(right - step_by_x, top - step_by_y,
+                 heights[(i - 1) * n_nodes_by_x + j - 1]);
 
-      glPushMatrix();
-        glTranslatef(x, y, heights[i * n_nodes_by_x + j]);
-        glutSolidSphere(0.02, 10, 10);
-      glPopMatrix();
+      glVertex3f(right, top, heights[i * n_nodes_by_x + j]);
+      glVertex3f(right - step_by_x, top - step_by_y,
+                 heights[(i - 1) * n_nodes_by_x + j - 1]);
+      glVertex3f(right, top - step_by_y,
+                 heights[(i - 1) * n_nodes_by_x + j]);
     }
   }
+  glEnd();
 }
