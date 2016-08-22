@@ -1,14 +1,17 @@
+#include <math.h>
+
 #include <GL/freeglut.h>
 
+#include "include/camera.hpp"
 #include "include/surface.hpp"
 
 void display();
 void reshape(int width, int height);
-void setup_camera(int window_width, int window_height);
 void draw_axises();
 
 int window_width;
 int window_height;
+Camera camera;
 Surface surface(-1.0f, 1.0f, -1.0f, 1.0f, 25, 25);
 
 int main(int argc, char** argv) {
@@ -22,6 +25,7 @@ int main(int argc, char** argv) {
   // Set callbacks.
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
+  glutIdleFunc(display);
 
   glutMainLoop();
   return 0;
@@ -30,13 +34,14 @@ int main(int argc, char** argv) {
 void display() {
   glClear(GL_COLOR_BUFFER_BIT);
 
-  setup_camera(window_width, window_height);
+  camera.Setup(window_width, window_height);
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+    draw_axises();
+    surface.Draw();
 
-  draw_axises();
-  surface.Draw();
+  // camera.MakeScreenshot(window_width, window_height);
 
   glutSwapBuffers();
 }
@@ -56,20 +61,6 @@ void draw_axises() {
     glVertex3f(0.0f, 0.0f, 0.0f);
     glVertex3f(0.0f, 0.0f, 100.0f);
   glEnd();
-}
-
-void setup_camera(int window_width, int window_height) {
-  static const float near_clip_plane = 0.1f;
-  static const float far_clip_plane = 1000.0f;
-  static const float view_angle = 30.0f;
-  const float aspect = (float)window_width / window_height;
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(view_angle, aspect, near_clip_plane, far_clip_plane);
-  gluLookAt(10, 10, 10,  // Camera position.
-            0, 0, 0,     // View point position.
-            0, 0, 1);    // Camera axis.
 }
 
 void reshape(int width, int height) {
