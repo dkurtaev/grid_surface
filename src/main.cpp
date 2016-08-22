@@ -2,7 +2,7 @@
 
 void display();
 void reshape(int width, int height);
-void setup_camera();
+void setup_camera(int window_width, int window_height);
 void draw_axises();
 
 int window_width;
@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 void display() {
   glClear(GL_COLOR_BUFFER_BIT);
 
-  setup_camera();
+  setup_camera(window_width, window_height);
   draw_axises();
 
   glutSwapBuffers();
@@ -50,7 +50,7 @@ void draw_axises() {
   glEnd();
 }
 
-void setup_camera() {
+void setup_camera(int window_width, int window_height) {
   static const float near_clip_plane = 0.1f;
   static const float far_clip_plane = 1000.0f;
   static const float view_angle = 30.0f;
