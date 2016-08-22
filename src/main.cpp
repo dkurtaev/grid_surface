@@ -7,12 +7,12 @@
 
 void display();
 void reshape(int width, int height);
-void draw_axises();
+void DrawAxises();
 
 int window_width;
 int window_height;
 Camera camera;
-Surface surface(-1.0f, 1.0f, -1.0f, 1.0f, 25, 25);
+Surface surface(-2.0f, 2.0f, -2.0f, 2.0f, 30, 30);
 
 int main(int argc, char** argv) {
   glutInit(&argc, argv);  // GLUT initialization.
@@ -38,7 +38,7 @@ void display() {
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-    draw_axises();
+    DrawAxises();
     surface.Draw();
 
   // camera.MakeScreenshot(window_width, window_height);
@@ -46,7 +46,7 @@ void display() {
   glutSwapBuffers();
 }
 
-void draw_axises() {
+void DrawAxises() {
   // Ox is red, Oy is blue, Oz is green.
   glBegin(GL_LINES);
     glColor3ub(255, 0, 0);

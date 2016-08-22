@@ -11,7 +11,7 @@ class Surface {
   void Draw();
 
  private:
-  float** heights;
+  float* heights;
   float min_x;
   float min_y;
   int n_nodes_by_x;
