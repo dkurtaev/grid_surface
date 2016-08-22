@@ -7,9 +7,11 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 set(sources
   src/main.cpp
+  src/surface.cpp
 )
 
 set(headers
+  include/surface.hpp
 )
 
 find_package(OpenGL REQUIRED)

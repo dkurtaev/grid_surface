@@ -1,5 +1,7 @@
 #include <GL/freeglut.h>
 
+#include "include/surface.hpp"
+
 void display();
 void reshape(int width, int height);
 void setup_camera(int window_width, int window_height);
@@ -7,6 +9,7 @@ void draw_axises();
 
 int window_width;
 int window_height;
+Surface surface(-1.0f, 1.0f, -1.0f, 1.0f, 25, 25);
 
 int main(int argc, char** argv) {
   glutInit(&argc, argv);  // GLUT initialization.
@@ -28,7 +31,12 @@ void display() {
   glClear(GL_COLOR_BUFFER_BIT);
 
   setup_camera(window_width, window_height);
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+
   draw_axises();
+  surface.Draw();
 
   glutSwapBuffers();
 }
@@ -59,9 +67,9 @@ void setup_camera(int window_width, int window_height) {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   gluPerspective(view_angle, aspect, near_clip_plane, far_clip_plane);
-  gluLookAt(100, 100, 50,  // Camera position.
-            0, 0, 0,       // View point position.
-            0, 0, 1);      // Camera axis.
+  gluLookAt(10, 10, 10,  // Camera position.
+            0, 0, 0,     // View point position.
+            0, 0, 1);    // Camera axis.
 }
 
 void reshape(int width, int height) {
