@@ -11,13 +11,9 @@ class Surface {
   void Draw();
 
  private:
-  float* heights;
-  float min_x;
-  float min_y;
-  int n_nodes_by_x;
-  int n_nodes_by_y;
-  float step_by_x;
-  float step_by_y;
+  float* coordinates;
+  unsigned short* indices;
+  int n_triangles;
 };
 
 #endif  // INCLUDE_SURFACE_HPP_
