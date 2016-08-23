@@ -41,7 +41,7 @@ void display() {
     DrawAxises();
     surface.Draw();
 
-  camera.MakeScreenshot(window_width, window_height);
+  // camera.MakeScreenshot(window_width, window_height);
 
   glutSwapBuffers();
 }
