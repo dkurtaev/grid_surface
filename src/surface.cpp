@@ -18,7 +18,7 @@ Surface::Surface(float min_x, float max_x, float min_y, float max_y,
     for (int j = 0; j < n_nodes_by_x; ++j) {
       float x = min_x + j * step_by_x;
       float y = min_y + i * step_by_y;
-      heights[i * n_nodes_by_x + j] = cos(x * y / M_PI);
+      heights[i * n_nodes_by_x + j] = sin(x) * sin(y) + 1;
     }
   }
 }
@@ -36,7 +36,7 @@ void Surface::Draw() {
 
       glPushMatrix();
         glTranslatef(x, y, heights[i * n_nodes_by_x + j]);
-        glutSolidSphere(0.02, 10, 10);
+        glutSolidSphere(0.05, 10, 10);
       glPopMatrix();
     }
   }

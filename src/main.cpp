@@ -12,7 +12,7 @@ void DrawAxises();
 int window_width;
 int window_height;
 Camera camera;
-Surface surface(-2.0f, 2.0f, -2.0f, 2.0f, 30, 30);
+Surface surface(-5.0f, 5.0f, -5.0f, 5.0f, 50, 50);
 
 int main(int argc, char** argv) {
   glutInit(&argc, argv);  // GLUT initialization.
@@ -41,7 +41,7 @@ void display() {
     DrawAxises();
     surface.Draw();
 
-  // camera.MakeScreenshot(window_width, window_height);
+  camera.MakeScreenshot(window_width, window_height);
 
   glutSwapBuffers();
 }
