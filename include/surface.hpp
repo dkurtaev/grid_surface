@@ -12,8 +12,7 @@ class Surface {
 
  private:
   float* vertices_array;
-  int n_nodes_by_x;
-  int n_nodes_by_y;
+  int n_nodes;
 };
 
 #endif  // INCLUDE_SURFACE_HPP_

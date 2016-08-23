@@ -6,13 +6,12 @@
 
 Surface::Surface(float min_x, float max_x, float min_y, float max_y,
                  int n_nodes_by_x, int n_nodes_by_y) {
-  this->n_nodes_by_x = n_nodes_by_x;
-  this->n_nodes_by_y = n_nodes_by_y;
+  n_nodes = n_nodes_by_x * n_nodes_by_y;
   float step_by_x = (max_x - min_x) / (n_nodes_by_x - 1);
   float step_by_y = (max_y - min_y) / (n_nodes_by_y - 1);
 
   // Setup coordinates: (x, y, z) point.
-  vertices_array = new float[n_nodes_by_x * n_nodes_by_y * 3];
+  vertices_array = new float[n_nodes * 3];
   float* offset = vertices_array;
   for (int i = 0; i < n_nodes_by_y; ++i) {
     for (int j = 0; j < n_nodes_by_x; ++j) {
@@ -33,13 +32,11 @@ Surface::~Surface() {
 void Surface::Draw() {
   glColor3ub(0, 127, 127);
   float* offset = vertices_array;
-  for (int i = 0; i < n_nodes_by_y; ++i) {
-    for (int j = 0; j < n_nodes_by_x; ++j) {
-      glPushMatrix();
-        glTranslatef(offset[0], offset[1], offset[2]);
-        glutSolidSphere(0.05, 10, 10);
-      glPopMatrix();
-      offset += 3;
-    }
+  for (int i = 0; i < n_nodes; ++i) {
+    glPushMatrix();
+      glTranslatef(offset[0], offset[1], offset[2]);
+      glutSolidSphere(0.05, 10, 10);
+    glPopMatrix();
+    offset += 3;
   }
 }
