@@ -42,17 +42,19 @@ void Surface::Draw() {
   //    | /     |
   //    0-------1
   // (i, j)   (i, j+1)
-  const int n_cells = (n_nodes_by_x - 1) * (n_nodes_by_y - 1);
   float* offset = vertices_array;
-  for (int i = 0; i < n_cells; ++i) {
-    glVertex3fv(offset);  // Bottom left.
-    glVertex3fv(offset + (n_nodes_by_x + 1) * 3);  // Top right.
-    glVertex3fv(offset + n_nodes_by_x * 3);  // Top left.
+  for (int i = 0; i < n_nodes_by_y - 1; ++i) {
+    for (int i = 0; i < n_nodes_by_x - 1; ++i) {
+      glVertex3fv(offset);  // Bottom left.
+      glVertex3fv(offset + (n_nodes_by_x + 1) * 3);  // Top right.
+      glVertex3fv(offset + n_nodes_by_x * 3);  // Top left.
 
-    glVertex3fv(offset);
-    glVertex3fv(offset + 3);  // Bottom right.
-    glVertex3fv(offset + (n_nodes_by_x + 1) * 3);  // Top right.
-    offset += 3;
+      glVertex3fv(offset);
+      glVertex3fv(offset + 3);  // Bottom right.
+      glVertex3fv(offset + (n_nodes_by_x + 1) * 3);  // Top right.
+      offset += 3;
+    }
+    offset += 3;  // Skip right border nodes.
   }
   glEnd();
 }
