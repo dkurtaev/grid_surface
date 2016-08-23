@@ -12,6 +12,7 @@ class Surface {
 
  private:
   float* coordinates;
+  float* normals;
   unsigned short* indices;
   int n_triangles;
 };

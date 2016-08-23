@@ -12,7 +12,7 @@ void DrawAxises();
 int window_width;
 int window_height;
 Camera camera;
-Surface surface(-2.0f, 2.0f, -2.0f, 2.0f, 30, 30);
+Surface surface(-5.0f, 5.0f, -5.0f, 5.0f, 100, 100);
 
 int main(int argc, char** argv) {
   glutInit(&argc, argv);  // GLUT initialization.
@@ -27,12 +27,25 @@ int main(int argc, char** argv) {
   glutReshapeFunc(reshape);
   glutIdleFunc(display);
 
+
+  glEnable(GL_LIGHTING);
+glEnable(GL_COLOR_MATERIAL);
+glEnable(GL_DEPTH_TEST);
+
+glEnable(GL_LIGHT0);
+GLfloat ambient[] = { 0.2, 0.2, 0.2, 1 };
+GLfloat diffuse[] = { 0.8, 0.8, 0.8, 1 };
+GLfloat position[] = { 100, 100, 100, 1 };
+glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+glLightfv(GL_LIGHT0, GL_POSITION, position);
+
   glutMainLoop();
   return 0;
 }
 
 void display() {
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   camera.Setup(window_width, window_height);
 

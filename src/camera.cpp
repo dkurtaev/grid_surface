@@ -14,8 +14,8 @@ void Camera::Setup(int window_width, int window_height) {
   static const float far_clip_plane = 1000.0f;
   static const float view_angle = 30.0f;
   static float ratio = M_PI / 180.0f;
-  static float camera_orbit_radius = 10.0f;
-  static const float camera_z = 6.0f;
+  static float camera_orbit_radius = 20.0f;
+  static const float camera_z = 15.0f;
 
   azimuth = (azimuth != 359.0f ? azimuth + 1.0f : 0.0f);
 
