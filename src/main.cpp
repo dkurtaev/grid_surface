@@ -39,7 +39,12 @@ void display() {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
     DrawAxises();
+
+    glColor3ub(0, 127, 127);
     surface.Draw();
+
+    glColor3ub(127, 0, 0);
+    surface.DrawGrid();
 
   // camera.MakeScreenshot(window_width, window_height);
 

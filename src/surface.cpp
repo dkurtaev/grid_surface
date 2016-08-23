@@ -31,8 +31,6 @@ Surface::~Surface() {
 }
 
 void Surface::Draw() {
-  glColor3ub(0, 127, 127);
-
   glBegin(GL_TRIANGLES);
   // Every cell of grid looks like:
   // (i+1, j)  (i+1, j+1)   first triangle on 0-2-3 vertices
@@ -57,4 +55,10 @@ void Surface::Draw() {
     offset += 3;  // Skip right border nodes.
   }
   glEnd();
+}
+
+void Surface::DrawGrid() {
+  glPolygonMode(GL_FRONT, GL_LINE);
+  Draw();
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
