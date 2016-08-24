@@ -11,9 +11,9 @@ class Surface {
   void Draw();
 
  private:
-  float* coordinates;
-  float* normals;
-  unsigned short* indices;
+  float* vertices_array;
+  float* normals_array;
+  unsigned short* indices_array;
   int n_triangles;
 };
 

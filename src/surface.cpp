@@ -12,15 +12,16 @@ Surface::Surface(float min_x, float max_x, float min_y, float max_y,
   float step_by_y = (max_y - min_y) / (n_nodes_by_y - 1);
 
   // Setup coordinates: (x, y, z) point.
-  coordinates = new float[n_nodes_by_x * n_nodes_by_y * 3];
-  int offset = 0;
+  vertices_array = new float[n_nodes_by_x * n_nodes_by_y * 3];
+  float* vertices_offset = vertices_array;
   for (int i = 0; i < n_nodes_by_y; ++i) {
     for (int j = 0; j < n_nodes_by_x; ++j) {
       float x = min_x + j * step_by_x;
       float y = min_y + i * step_by_y;
-      coordinates[offset++] = x;
-      coordinates[offset++] = y;
-      coordinates[offset++] = sin(x) * sin(y) + 1;
+      vertices_offset[0] = x;
+      vertices_offset[1] = y;
+      vertices_offset[2] = sin(x) * sin(y) + 1;
+      vertices_offset += 3;
     }
   }
 
@@ -33,18 +34,20 @@ Surface::Surface(float min_x, float max_x, float min_y, float max_y,
   //    0-------1
   // (i, j)   (i, j+1)
   n_triangles = (n_nodes_by_x - 1) * (n_nodes_by_y - 1) * 2;
-  indices = new unsigned short[n_triangles * 3];
-  offset = 0;
+  indices_array = new unsigned short[n_triangles * 3];
+  unsigned short* indices_offset = indices_array;
   for (int i = 0; i < n_nodes_by_y - 1; ++i) {
     for (int j = 0; j < n_nodes_by_x - 1; ++j) {
       int base_idx = (i * n_nodes_by_x) + j;
-      indices[offset++] = base_idx;  // Bottom left vertex.
-      indices[offset++] = base_idx + n_nodes_by_x + 1;  // Top right vertex.
-      indices[offset++] = base_idx + n_nodes_by_x;  // Top left vertex.
+      indices_offset[0] = base_idx;  // Bottom left vertex.
+      indices_offset[1] = base_idx + n_nodes_by_x + 1;  // Top right vertex.
+      indices_offset[2] = base_idx + n_nodes_by_x;  // Top left vertex.
+      indices_offset += 3;
 
-      indices[offset++] = base_idx;
-      indices[offset++] = base_idx + 1;  // Right vertex.
-      indices[offset++] = base_idx + n_nodes_by_x + 1;  // Top right vertex.
+      indices_offset[0] = base_idx;
+      indices_offset[1] = base_idx + 1;  // Right vertex.
+      indices_offset[2] = base_idx + n_nodes_by_x + 1;  // Top right vertex.
+      indices_offset += 3;
     }
   }
 
@@ -59,60 +62,57 @@ Surface::Surface(float min_x, float max_x, float min_y, float max_y,
   //      | / 2 | /***|
   // y-dy z2----z3----*
   //     x-dx   x    x+dx
-  normals = new float[n_nodes_by_x * n_nodes_by_y * 3];
-  memset(normals, 0, sizeof(float) * n_nodes_by_x * n_nodes_by_y * 3);
+  normals_array = new float[n_nodes_by_x * n_nodes_by_y * 3];
   for (int i = 1; i < n_nodes_by_y - 1; ++i) {
     for (int j = 1; j < n_nodes_by_x - 1; ++j) {
       int base_idx = i * n_nodes_by_x + j;
 
-      float z1 = coordinates[(base_idx - 1) * 3 + 2];
-      float z2 = coordinates[(base_idx - n_nodes_by_x - 1) * 3 + 2];
-      float z3 = coordinates[(base_idx - n_nodes_by_x) * 3 + 2];
-      float z4 = coordinates[(base_idx + 1) * 3 + 2];
-      float z5 = coordinates[(base_idx + n_nodes_by_x + 1) * 3 + 2];
-      float z6 = coordinates[(base_idx + n_nodes_by_x) * 3 + 2];
+      float z1 = vertices_array[(base_idx - 1) * 3 + 2];
+      float z2 = vertices_array[(base_idx - n_nodes_by_x - 1) * 3 + 2];
+      float z3 = vertices_array[(base_idx - n_nodes_by_x) * 3 + 2];
+      float z4 = vertices_array[(base_idx + 1) * 3 + 2];
+      float z5 = vertices_array[(base_idx + n_nodes_by_x + 1) * 3 + 2];
+      float z6 = vertices_array[(base_idx + n_nodes_by_x) * 3 + 2];
 
-      float nx = 1.0f / 6.0f * step_by_y * (2 * z1 + z2 - z3 - 2 * z4 - z5 + z6);
-      float ny = 1.0f / 6.0f * step_by_x * (-z1 + z2 + 2 * z3 + z4 - z5 - 2 * z6);
-      float nz = step_by_x * step_by_y;
+      float nx = 1.0f / 6 * step_by_y * (2 * z1 + z2 - z3 - 2 * z4 - z5 + z6);
+      float ny = 1.0f / 6 * step_by_x * (-z1 + z2 + 2 * z3 + z4 - z5 - 2 * z6);
 
-      float norm = sqrt(nx * nx + ny * ny + nz * nz);
-      normals[base_idx * 3] = nx / norm;
-      normals[base_idx * 3 + 1] = ny / norm;
-      normals[base_idx * 3 + 2] = nz / norm;
+      normals_array[base_idx * 3] = nx;
+      normals_array[base_idx * 3 + 1] = ny;
+      normals_array[base_idx * 3 + 2] = step_by_x * step_by_y;
     }
   }
 
   // Normals for left and right borders.
-  for (int i = 0; i < n_nodes_by_y; ++i) {
-    int base_idx = (i * n_nodes_by_x) * 3;
-    memcpy(normals + (i * n_nodes_by_x) * 3,
-           normals + (i * n_nodes_by_x + 1) * 3,
-           3 * sizeof(float));
-    memcpy(normals + ((i + 1) * n_nodes_by_x - 1) * 3,
-           normals + ((i + 1) * n_nodes_by_x - 2) * 3,
-           3 * sizeof(float));
+  float* left_border = normals_array + n_nodes_by_x * 3;  // From 1st line.
+  float* right_border = normals_array + (2 * n_nodes_by_x - 1) * 3;
+  for (int i = 1; i < n_nodes_by_y - 1; ++i) {
+    memcpy(left_border, left_border + 3, 3 * sizeof(float));
+    memcpy(right_border, right_border - 3, 3 * sizeof(float));
+    left_border += n_nodes_by_x * 3;
+    right_border += n_nodes_by_x * 3;
   }
 
   // Normals for top and bottom borders.
-  memcpy(normals, normals + n_nodes_by_x * 3, n_nodes_by_x * 3 * sizeof(float));
-  memcpy(normals + (n_nodes_by_y - 1) * n_nodes_by_x * 3,
-         normals + (n_nodes_by_y - 2) * n_nodes_by_x * 3,
+  memcpy(normals_array, normals_array + n_nodes_by_x * 3,
+         n_nodes_by_x * 3 * sizeof(float));
+  memcpy(normals_array + (n_nodes_by_y - 1) * n_nodes_by_x * 3,
+         normals_array + (n_nodes_by_y - 2) * n_nodes_by_x * 3,
          n_nodes_by_x * 3 * sizeof(float));
 }
 
 Surface::~Surface() {
-  delete[] coordinates;
-  delete[] indices;
+  delete[] vertices_array;
+  delete[] normals_array;
+  delete[] indices_array;
 }
 
 void Surface::Draw() {
-  glColor3ub(0, 127, 127);
-
   glEnableClientState(GL_NORMAL_ARRAY);
-  glNormalPointer(GL_FLOAT, 0, normals);
+  glNormalPointer(GL_FLOAT, 0, normals_array);
 
   glEnableClientState(GL_VERTEX_ARRAY);
-  glVertexPointer(3, GL_FLOAT, 0, coordinates);
-  glDrawElements(GL_TRIANGLES, 3 * n_triangles, GL_UNSIGNED_SHORT, indices);
+  glVertexPointer(3, GL_FLOAT, 0, vertices_array);
+  glDrawElements(GL_TRIANGLES, 3 * n_triangles, GL_UNSIGNED_SHORT,
+                 indices_array);
 }

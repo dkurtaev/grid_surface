@@ -29,16 +29,17 @@ int main(int argc, char** argv) {
 
 
   glEnable(GL_LIGHTING);
-glEnable(GL_COLOR_MATERIAL);
-glEnable(GL_DEPTH_TEST);
+  glEnable(GL_COLOR_MATERIAL);
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_NORMALIZE);
 
-glEnable(GL_LIGHT0);
-GLfloat ambient[] = { 0.2, 0.2, 0.2, 1 };
-GLfloat diffuse[] = { 0.8, 0.8, 0.8, 1 };
-GLfloat position[] = { 100, 100, 100, 1 };
-glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-glLightfv(GL_LIGHT0, GL_POSITION, position);
+  glEnable(GL_LIGHT0);
+  GLfloat ambient[] = { 0.2, 0.2, 0.2, 1 };
+  GLfloat diffuse[] = { 0.8, 0.8, 0.8, 1 };
+  GLfloat position[] = { 100, 100, 100, 1 };
+  glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+  glLightfv(GL_LIGHT0, GL_POSITION, position);
 
   glutMainLoop();
   return 0;
@@ -52,9 +53,8 @@ void display() {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
     DrawAxises();
+    glColor3ub(0, 127, 127);
     surface.Draw();
-
-  // camera.MakeScreenshot(window_width, window_height);
 
   glutSwapBuffers();
 }
