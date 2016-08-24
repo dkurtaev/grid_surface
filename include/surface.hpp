@@ -10,10 +10,9 @@ class Surface {
 
   void Draw();
 
-  void DrawGrid();
-
  private:
   float* vertices_array;
+  float* normals_array;
   int n_nodes_by_x;
   int n_nodes_by_y;
 };

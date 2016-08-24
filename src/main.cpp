@@ -27,12 +27,24 @@ int main(int argc, char** argv) {
   glutReshapeFunc(reshape);
   glutIdleFunc(display);
 
+  glEnable(GL_LIGHTING);
+  glEnable(GL_COLOR_MATERIAL);
+  glEnable(GL_DEPTH_TEST);
+
+  glEnable(GL_LIGHT0);
+  GLfloat ambient[] = { 0.2, 0.2, 0.2, 1 };
+  GLfloat diffuse[] = { 0.8, 0.8, 0.8, 1 };
+  GLfloat position[] = { 100, 100, 100, 1 };
+  glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+  glLightfv(GL_LIGHT0, GL_POSITION, position);
+
   glutMainLoop();
   return 0;
 }
 
 void display() {
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   camera.Setup(window_width, window_height);
 
@@ -42,9 +54,6 @@ void display() {
 
     glColor3ub(0, 127, 127);
     surface.Draw();
-
-    glColor3ub(127, 0, 0);
-    surface.DrawGrid();
 
   // camera.MakeScreenshot(window_width, window_height);
 

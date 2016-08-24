@@ -7,7 +7,7 @@
 #include <opencv2/opencv.hpp>
 
 Camera::Camera()
-  : azimuth(0.0f) {}
+  : azimuth(20.0f) {}
 
 void Camera::Setup(int window_width, int window_height) {
   static const float near_clip_plane = 0.1f;
@@ -16,8 +16,6 @@ void Camera::Setup(int window_width, int window_height) {
   static float ratio = M_PI / 180.0f;
   static float camera_orbit_radius = 20.0f;
   static const float camera_z = 15.0f;
-
-  azimuth = (azimuth != 359.0f ? azimuth + 0.01f : 0.0f);
 
   const float aspect = (float)window_width / window_height;
   const float camera_x = camera_orbit_radius * cos(azimuth * ratio);
