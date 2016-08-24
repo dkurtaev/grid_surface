@@ -39,36 +39,34 @@ Surface::Surface(float min_x, float max_x, float min_y, float max_y,
   // y-dy z2----z3----*
   //     x-dx   x    x+dx
   normals_array = new float[n_nodes_by_x * n_nodes_by_y * 3];
-  float nz = step_by_x * step_by_y;
   for (int i = 1; i < n_nodes_by_y - 1; ++i) {
-   for (int j = 1; j < n_nodes_by_x - 1; ++j) {
-     int base_idx = i * n_nodes_by_x + j;
+    for (int j = 1; j < n_nodes_by_x - 1; ++j) {
+      int base_idx = i * n_nodes_by_x + j;
 
-     float z1 = vertices_array[(base_idx - 1) * 3 + 2];
-     float z2 = vertices_array[(base_idx - n_nodes_by_x - 1) * 3 + 2];
-     float z3 = vertices_array[(base_idx - n_nodes_by_x) * 3 + 2];
-     float z4 = vertices_array[(base_idx + 1) * 3 + 2];
-     float z5 = vertices_array[(base_idx + n_nodes_by_x + 1) * 3 + 2];
-     float z6 = vertices_array[(base_idx + n_nodes_by_x) * 3 + 2];
+      float z1 = vertices_array[(base_idx - 1) * 3 + 2];
+      float z2 = vertices_array[(base_idx - n_nodes_by_x - 1) * 3 + 2];
+      float z3 = vertices_array[(base_idx - n_nodes_by_x) * 3 + 2];
+      float z4 = vertices_array[(base_idx + 1) * 3 + 2];
+      float z5 = vertices_array[(base_idx + n_nodes_by_x + 1) * 3 + 2];
+      float z6 = vertices_array[(base_idx + n_nodes_by_x) * 3 + 2];
 
-     float nx = 1.0f / 6 * step_by_y * (2 * z1 + z2 - z3 - 2 * z4 - z5 + z6);
-     float ny = 1.0f / 6 * step_by_x * (-z1 + z2 + 2 * z3 + z4 - z5 - 2 * z6);
+      float nx = 1.0f / 6 * step_by_y * (2 * z1 + z2 - z3 - 2 * z4 - z5 + z6);
+      float ny = 1.0f / 6 * step_by_x * (-z1 + z2 + 2 * z3 + z4 - z5 - 2 * z6);
 
-     float norm = sqrt(nx * nx + ny * ny + nz * nz);
-     normals_array[base_idx * 3] = nx / norm;
-     normals_array[base_idx * 3 + 1] = ny / norm;
-     normals_array[base_idx * 3 + 2] = nz / norm;
-   }
+      normals_array[base_idx * 3] = nx;
+      normals_array[base_idx * 3 + 1] = ny;
+      normals_array[base_idx * 3 + 2] = step_by_x * step_by_y;
+    }
   }
 
   // Normals for left and right borders.
-  float* left_border = normals_array;
-  float* right_border = normals_array + (n_nodes_by_x - 1) * 3;
-  for (int i = 0; i < n_nodes_by_y; ++i) {
-   memcpy(left_border, left_border + 3, 3 * sizeof(float));
-   memcpy(right_border, right_border - 3, 3 * sizeof(float));
-   left_border += n_nodes_by_x * 3;
-   right_border += n_nodes_by_x * 3;
+  float* left_border = normals_array + n_nodes_by_x * 3;  // From 1st line.
+  float* right_border = normals_array + (2 * n_nodes_by_x - 1) * 3;
+  for (int i = 1; i < n_nodes_by_y - 1; ++i) {
+    memcpy(left_border, left_border + 3, 3 * sizeof(float));
+    memcpy(right_border, right_border - 3, 3 * sizeof(float));
+    left_border += n_nodes_by_x * 3;
+    right_border += n_nodes_by_x * 3;
   }
 
   // Normals for top and bottom borders.

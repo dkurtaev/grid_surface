@@ -30,6 +30,7 @@ int main(int argc, char** argv) {
   glEnable(GL_LIGHTING);
   glEnable(GL_COLOR_MATERIAL);
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_NORMALIZE);
 
   glEnable(GL_LIGHT0);
   GLfloat ambient[] = { 0.2, 0.2, 0.2, 1 };
