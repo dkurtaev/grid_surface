@@ -13,6 +13,7 @@ set(sources
 
 set(headers
   include/camera.hpp
+  include/fps_accumulator.hpp
   include/surface.hpp
 )
 
