@@ -26,28 +26,23 @@ Surface::Surface(float min_x, float max_x, float min_y, float max_y,
   }
 
   // Setup indices of triangles.
-  // (i+1, j)  (i+1, j+1)   first triangle on 0-2-3 vertices
-  //    3-------2           second triangle on 0-1-2 vertices.
-  //    |     / |
-  //    |   /   |
-  //    | /     |
-  //    0-------1
-  // (i, j)   (i, j+1)
-  n_triangles = (n_nodes_by_x - 1) * (n_nodes_by_y - 1) * 2;
-  indices_array = new unsigned short[n_triangles * 3];
+  n_indices = (n_nodes_by_y - 1) * n_nodes_by_x * 2;
+  indices_array = new unsigned short[n_indices];
   unsigned short* indices_offset = indices_array;
-  for (int i = 0; i < n_nodes_by_y - 1; ++i) {
-    for (int j = 0; j < n_nodes_by_x - 1; ++j) {
-      int base_idx = (i * n_nodes_by_x) + j;
-      indices_offset[0] = base_idx;  // Bottom left vertex.
-      indices_offset[1] = base_idx + n_nodes_by_x + 1;  // Top right vertex.
-      indices_offset[2] = base_idx + n_nodes_by_x;  // Top left vertex.
-      indices_offset += 3;
-
-      indices_offset[0] = base_idx;
-      indices_offset[1] = base_idx + 1;  // Right vertex.
-      indices_offset[2] = base_idx + n_nodes_by_x + 1;  // Top right vertex.
-      indices_offset += 3;
+  for (int y = 1; y < n_nodes_by_y; ++y) {
+    // Each 2nd line reverted indices order (for CCW triangles orientation).
+    if (y % 2 != 0) {
+      for (int x = 0; x < n_nodes_by_x; ++x) {
+        indices_offset[0] = y * n_nodes_by_x + x;
+        indices_offset[1] = (y - 1) * n_nodes_by_x + x;
+        indices_offset += 2;
+      }
+    } else {
+      for (int x = n_nodes_by_x - 1; x >= 0; --x) {
+        indices_offset[0] = (y - 1) * n_nodes_by_x + x;
+        indices_offset[1] = y * n_nodes_by_x + x;
+        indices_offset += 2;
+      }
     }
   }
 
@@ -113,6 +108,6 @@ void Surface::Draw() {
 
   glEnableClientState(GL_VERTEX_ARRAY);
   glVertexPointer(3, GL_FLOAT, 0, vertices_array);
-  glDrawElements(GL_TRIANGLES, 3 * n_triangles, GL_UNSIGNED_SHORT,
+  glDrawElements(GL_TRIANGLE_STRIP, n_indices, GL_UNSIGNED_SHORT,
                  indices_array);
 }

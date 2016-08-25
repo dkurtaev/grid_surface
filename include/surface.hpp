@@ -14,7 +14,7 @@ class Surface {
   float* vertices_array;
   float* normals_array;
   unsigned short* indices_array;
-  int n_triangles;
+  int n_indices;
 };
 
 #endif  // INCLUDE_SURFACE_HPP_
