@@ -3,6 +3,7 @@
 
 <head>
   <title>DK: Grid surface</title>
+  <link rel="stylesheet" href="node_modules/octicons/build/font/octicons.css">
 </head>
 
 <body>
@@ -30,7 +31,12 @@ Nodes (x, y) from uniform grid. z is height for each node.
 &bull; <a href="#indices_drawing">Drawing by indices</a><br>
 &bull; <a href="#strip_drawing">Drawing by triangle strip</a><br>
 
-<h2 id="coords_axises">Coordinate axises</h2>
+<h2 id="coords_axises">
+  <a href="https://github.com/dkurtaev/grid_surface/tree/coordinate_axises" style="text-decoration:none;">
+    <span class="mega-octicon octicon-git-branch"></span>
+  </a>
+  Coordinate axises
+</h2>
 <p>
 Initially we write program with coordinate axises drawing.<br>
 Plane of (x, y) points is horizontal base, by z axis values of surface function.<br>
@@ -102,7 +108,13 @@ In every node we knows z as function of (x, y): z = f(x, y). We call it
 value as height. Set of heights we call as heights map.
 </p>
 
-<h2 id="surface_via_spheres">Surface via spheres</h2>
+<h2 id="surface_via_spheres">
+  <a href="https://github.com/dkurtaev/grid_surface/tree/surface_via_spheres" style="text-decoration:none;">
+    <span class="mega-octicon octicon-git-branch"></span>
+  </a>
+  Surface via spheres
+</h2>
+
 <p>
 Let's build some surface using f(x, y) function. At the start our surface is a
 set of small spheres.
@@ -130,7 +142,13 @@ set of small spheres.
   </tr>
 </table>
 
-<h2 id="surface_via_triangles">Surface via triangles</h2>
+<h2 id="surface_via_triangles">
+  <a href="https://github.com/dkurtaev/grid_surface/tree/surface_via_triangles" style="text-decoration:none;">
+    <span class="mega-octicon octicon-git-branch"></span>
+  </a>
+  Surface via triangles
+</h2>
+
 <p>
 For filling empty space among nodes we need to draw OpenGL's primitives with
 vertices on nodes. Split cells of grid by triangles.<br>
@@ -187,7 +205,13 @@ corresponding array.
   </td>
 </table>
 
-<h2 id="normals_computation">Normals computation</h2>
+<h2 id="normals_computation">
+  <a href="https://github.com/dkurtaev/grid_surface/tree/surface_via_triangles_normals" style="text-decoration:none;">
+    <span class="mega-octicon octicon-git-branch"></span>
+  </a>
+  Normals computation
+</h2>
+
 <p>
 For robust shading our surface set normals to it for every vertex.
 </p>
@@ -238,40 +262,15 @@ y-dy  z2-----z3-----*
 +--- x-dx -- x --- x+dx ---->
 </code></pre>
 
-<table>
-  <td valign="top">
-    <script src="https://gist.github.com/dkurtaev/e783fded30b882e91dc0c492fbe2aef5.js?file=grid_surface_normals_constructor_internal_vertices.cpp"></script>
-  </td>
+<img src="images/lighting.png" alt="Surface with normals"><br>
 
-  <td valign="top">
-    <script src="https://gist.github.com/dkurtaev/e783fded30b882e91dc0c492fbe2aef5.js?file=grid_surface_normals_constructor_border_vertices.cpp"></script>
-    <pre><code>
-      #####  ##  ##  ##     ######   ###
-     ###    ######  ##     ##  ##   ##
-    #####  ##  ##  #####  ######   *
-    </code></pre>
-  </td>
-</table>
+<h2 id="indices_drawing">
+  <a href="https://github.com/dkurtaev/grid_surface/tree/draw_by_indices" style="text-decoration:none;">
+    <span class="mega-octicon octicon-git-branch"></span>
+  </a>
+  Drawing by indices
+</h2>
 
-<table>
-  <tr>
-    <td valign="top" rowspan="2">
-      <script src="https://gist.github.com/dkurtaev/e783fded30b882e91dc0c492fbe2aef5.js?file=grid_surface_normals_draw.cpp"></script>
-    </td>
-
-    <td valign="top">
-      <script src="https://gist.github.com/dkurtaev/e783fded30b882e91dc0c492fbe2aef5.js?file=grid_surface_settings.cpp"></script>
-    </td>
-  </tr>
-
-  <tr>
-    <td valign="top">
-      <img src="images/lighting.png" alt="S"><br>
-    </td>
-  </tr>
-</table>
-
-<h2 id="indices_drawing">Drawing by indices</h2>
 <p>
 Useful to use OpenGL usage with drawing primitives not by explit calls of
 glVertex and glNormal but via indices of corresponding vertices at our arrays.
@@ -287,7 +286,13 @@ glVertex and glNormal but via indices of corresponding vertices at our arrays.
   </td>
 </table>
 
-<h2 id="strip_drawing">Drawing by triangle strip</h2>
+<h2 id="strip_drawing">
+  <a href="https://github.com/dkurtaev/grid_surface/tree/triangle_strip" style="text-decoration:none;">
+    <span class="mega-octicon octicon-git-branch"></span>
+  </a>
+  Drawing by triangle strip
+</h2>
+
 <p>
 Using certain indices order we can more efficiently draw triangles which forms
 strip. It is directly our case because all grid could be divided by strips.
