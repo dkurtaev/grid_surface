@@ -108,11 +108,14 @@ Surface::~Surface() {
 }
 
 void Surface::Draw() {
+  glColor3ub(0, 127, 127);
+
   glEnableClientState(GL_NORMAL_ARRAY);
   glNormalPointer(GL_FLOAT, 0, normals_array);
 
   glEnableClientState(GL_VERTEX_ARRAY);
   glVertexPointer(3, GL_FLOAT, 0, vertices_array);
+
   glDrawElements(GL_TRIANGLES, 3 * n_triangles, GL_UNSIGNED_SHORT,
                  indices_array);
 }
