@@ -10,7 +10,7 @@ void draw_axises();
 
 int window_width;
 int window_height;
-Camera camera;
+Camera camera(19, 7, 16);
 
 int main(int argc, char** argv) {
   glutInit(&argc, argv);  // GLUT initialization.
@@ -34,7 +34,6 @@ void display() {
 
   camera.Setup(window_width, window_height);
   draw_axises();
-  camera.MakeScreenshot(window_width, window_height);
 
   glutSwapBuffers();
 }
