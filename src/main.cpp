@@ -11,7 +11,7 @@ void DrawAxises();
 
 int window_width;
 int window_height;
-Camera camera;
+Camera camera(19, 7, 16);
 Surface surface(-5.0f, 5.0f, -5.0f, 5.0f, 50, 50);
 
 int main(int argc, char** argv) {
@@ -25,7 +25,6 @@ int main(int argc, char** argv) {
   // Set callbacks.
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
-  glutIdleFunc(display);
 
   glutMainLoop();
   return 0;
@@ -39,14 +38,7 @@ void display() {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
     DrawAxises();
-
-    glColor3ub(0, 127, 127);
     surface.Draw();
-
-    glColor3ub(127, 0, 0);
-    surface.DrawGrid();
-
-  // camera.MakeScreenshot(window_width, window_height);
 
   glutSwapBuffers();
 }
