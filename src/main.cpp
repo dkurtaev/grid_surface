@@ -1,12 +1,10 @@
-#include <math.h>
-
 #include <GL/freeglut.h>
 
 #include "include/camera.hpp"
 
 void display();
 void reshape(int width, int height);
-void draw_axises();
+void DrawAxises();
 
 int window_width;
 int window_height;
@@ -23,7 +21,6 @@ int main(int argc, char** argv) {
   // Set callbacks.
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
-  glutIdleFunc(display);
 
   glutMainLoop();
   return 0;
@@ -33,12 +30,12 @@ void display() {
   glClear(GL_COLOR_BUFFER_BIT);
 
   camera.Setup(window_width, window_height);
-  draw_axises();
+  DrawAxises();
 
   glutSwapBuffers();
 }
 
-void draw_axises() {
+void DrawAxises() {
   // Ox is red, Oy is blue, Oz is green.
   glBegin(GL_LINES);
     glColor3ub(255, 0, 0);
